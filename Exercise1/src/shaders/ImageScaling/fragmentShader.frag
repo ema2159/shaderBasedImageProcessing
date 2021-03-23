@@ -18,8 +18,7 @@ void main(void) {
   vec2 center = vec2(centerX, centerY);
   vec2 uv = vUv.xy + center;
 
-  float scl = scale;
-  uv = scale_coord(uv, scl);
+  uv = scale_coord(uv, scale);
 
   vec4 textureValue = vec4(0, 0, 0, 0);
   for (int i = -kernelSizeDiv2; i <= kernelSizeDiv2; i++)
