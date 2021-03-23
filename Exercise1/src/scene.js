@@ -110,10 +110,13 @@ function init() {
 
     imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
+	// Image scaling
         scale: {type: "f", value: 1.0},
         centerX: {type: "f", value: 0.0},
         centerY: {type: "f", value: 0.0},
         image: {type: "t", value: videoTexture},
+        image2: {type: "t", value: videoTexture},
+        operation: {type: "i", value: 0},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
@@ -175,6 +178,7 @@ function init() {
     };
 
     gui = new GUI();
+    // Image arithmetic
     gui
       .add(imageProcessingMaterial.uniforms.scale, "value", 0.1, 2)
       .name("Scale");
@@ -184,6 +188,8 @@ function init() {
     gui
       .add(imageProcessingMaterial.uniforms.centerY, "value", 0, 1)
       .name("CenterY");
+      .add(imageProcessingMaterial.uniforms.operation, "value", {Sum: 0, Sub: 1, Mult: 2, Div: 3})
+      .name("Operation");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
 
