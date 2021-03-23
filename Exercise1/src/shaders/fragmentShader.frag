@@ -3,6 +3,8 @@ const int kernelSizeDiv2 = 2;
 uniform sampler2D image;
 uniform vec2 resolution;
 uniform float scale;
+uniform float centerX;
+uniform float centerY;
 
 varying vec2 vUv;
 
@@ -13,7 +15,8 @@ vec2 scale_coord(vec2 pt, float scale) {
 
 void main(void) {
   vec2 cellSize = 1.0 / resolution.xy;
-  vec2 uv = vUv.xy;
+  vec2 center = vec2(centerX, centerY);
+  vec2 uv = vUv.xy + center;
 
   float scl = scale;
   uv = scale_coord(uv, scl);
