@@ -110,6 +110,7 @@ function init() {
 
     imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
+        scale: {type: "f", value: 1.0},
         image: {type: "t", value: videoTexture},
         resolution: {
           type: "2f",
@@ -172,6 +173,9 @@ function init() {
     };
 
     gui = new GUI();
+    gui
+      .add(imageProcessingMaterial.uniforms.scale, "value", 0.1, 2)
+      .name("Scale");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
 
