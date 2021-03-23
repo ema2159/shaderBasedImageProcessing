@@ -53,7 +53,7 @@ function IVprocess(imageProcessing, renderer) {
 }
 
 var camera, controls, scene, renderer, container;
-var plan;
+var plane;
 
 // VIDEO AND THE ASSOCIATED TEXTURE
 var video, videoTexture;
@@ -139,10 +139,10 @@ function init() {
       map: imageProcessing.rtt.texture,
       side: THREE.DoubleSide,
     });
-    plan = new THREE.Mesh(geometry, material);
-    plan.receiveShadow = false;
-    plan.castShadow = false;
-    scene.add(plan);
+    plane = new THREE.Mesh(geometry, material);
+    plane.receiveShadow = false;
+    plane.castShadow = false;
+    scene.add(plane);
 
     var geometry2 = new THREE.PlaneGeometry(
       1,
@@ -152,11 +152,11 @@ function init() {
       map: videoTexture,
       side: THREE.DoubleSide,
     });
-    plan = new THREE.Mesh(geometry2, material2);
-    plan.position.z = -0.5;
-    plan.receiveShadow = false;
-    plan.castShadow = false;
-    scene.add(plan);
+    plane = new THREE.Mesh(geometry2, material2);
+    plane.position.z = -0.5;
+    plane.receiveShadow = false;
+    plane.castShadow = false;
+    scene.add(plane);
 
     var pausePlayObj = {
       pausePlay: function () {
