@@ -191,11 +191,11 @@ function init() {
       .add(imageProcessingMaterial.uniforms.centerY, "value", 0, 1)
       .name("CenterY");
     // Image arithmetic
-    // gui
-    //   .add(imageProcessingMaterial.uniforms.operation, "value", {Sum: 0, Sub: 1, Mult: 2, Div: 3})
-    //   .name("Operation");
-    // gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
-    // gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
+    gui
+      .add(imageProcessingMaterial.uniforms.operation, "value", {Sum: 0, Sub: 1, Mult: 2, Div: 3})
+      .name("Operation");
+    gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
+    gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
 
     video.play();
   };
