@@ -187,6 +187,8 @@ function init() {
     gui
       .add(imageProcessingMaterial.uniforms.centerY, "value", 0, 1)
       .name("CenterY");
+    gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
+    gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
     video.play();
   };
 
