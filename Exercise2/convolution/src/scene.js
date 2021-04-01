@@ -115,8 +115,8 @@ function init() {
         centerX: {type: "f", value: 0.0},
         centerY: {type: "f", value: 0.0},
         image: {type: "t", value: videoTexture},
-	sigma: {type: "f", value: 5.0},
-	kernelSize: {type: "i", value: 31.0},
+	sigma: {type: "f", value: 1.0},
+	kernelSize: {type: "i", value: 1.0},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
@@ -178,7 +178,13 @@ function init() {
     };
 
     gui = new GUI();
-    // Image scaling
+    // Image convolution
+    gui
+      .add(imageProcessingMaterial.uniforms.sigma, "value", 1, 5, 1)
+      .name("Sigma");
+    gui
+      .add(imageProcessingMaterial.uniforms.kernelSize, "value", 0, 31, 1)
+      .name("Kernel Size");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
     video.play();
