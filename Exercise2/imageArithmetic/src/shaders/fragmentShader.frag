@@ -27,13 +27,13 @@ void main(void) {
   vec4 textureValue2 = texture2D(image2, uv2);
 
   if(operation == 0) {
-    textureValue += textureValue2;
+    textureValue.rgb += textureValue2.rgb;
   } else if (operation == 1) {
-    textureValue -= textureValue2;
+    textureValue.rgb -= textureValue2.rgb;
   } else if (operation == 2) {
-    textureValue *= textureValue2;
+    textureValue.rgb *= textureValue2.rgb;
   } else if (operation == 3) {
-    textureValue /= textureValue2;
+    textureValue.rgb /= textureValue2.rgb;
   }
 
   gl_FragColor = textureValue;
