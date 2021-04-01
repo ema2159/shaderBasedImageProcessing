@@ -108,6 +108,8 @@ function init() {
     videoTexture.generateMipmaps = false;
     videoTexture.format = THREE.RGBFormat;
 
+    const imageTexture = new THREE.TextureLoader().load('./assets/image1.jpg');
+
     imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
 	// Image scaling
@@ -115,7 +117,7 @@ function init() {
         centerX: {type: "f", value: 0.0},
         centerY: {type: "f", value: 0.0},
         image: {type: "t", value: videoTexture},
-        image2: {type: "t", value: videoTexture},
+        image2: {type: "t", value: imageTexture},
         operation: {type: "i", value: 0},
         resolution: {
           type: "2f",
