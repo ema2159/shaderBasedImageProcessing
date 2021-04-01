@@ -10,7 +10,6 @@ const fragmentShader = `
 precision highp float;
 const int kernelSizeDiv2 = 2;
 uniform sampler2D image;
-uniform sampler2D image2;
 uniform vec2 resolution;
 uniform float scale;
 uniform float centerX;

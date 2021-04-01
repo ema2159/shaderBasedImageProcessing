@@ -115,7 +115,6 @@ function init() {
         centerX: {type: "f", value: 0.0},
         centerY: {type: "f", value: 0.0},
         image: {type: "t", value: videoTexture},
-        image2: {type: "t", value: videoTexture},
         operation: {type: "i", value: 0},
         resolution: {
           type: "2f",
