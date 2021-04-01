@@ -110,6 +110,8 @@ function init() {
 
     const imageTexture = new THREE.TextureLoader().load('./assets/image1.jpg');
 
+    imageTexture.wrapS = imageTexture.wrapT = THREE.RepeatWrapping;
+
     imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
 	// Image scaling
