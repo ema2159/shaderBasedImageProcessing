@@ -30,27 +30,8 @@ void main(void) {
   vec2 uv = vUv.xy + center;
 
   uv = scale_coord(uv, scale);
-
-  vec4 textureValue = vec4(0, 0, 0, 0);
-  vec4 textureValue2 = vec4(0, 0, 0, 0);
-  for (int i = -kernelSizeDiv2; i <= kernelSizeDiv2; i++) {
-    for (int j = -kernelSizeDiv2; j <= kernelSizeDiv2; j++) {
-      textureValue += texture2D(
-          image, uv + vec2(float(i) * cellSize.x, float(j) * cellSize.y));
-      textureValue2 += texture2D(
-          image2, uv + vec2(float(i) * cellSize.x, float(j) * cellSize.y));
-    }
-  }
-  if(operation == 0) {
-    textureValue += textureValue2;
-  } else if (operation == 1) {
-    textureValue -= textureValue2;
-  } else if (operation == 2) {
-    textureValue *= textureValue2;
-  } else if (operation == 3) {
-    textureValue /= textureValue2;
-  }
-  textureValue /= float((kernelSizeDiv2 * 2 + 1) * (kernelSizeDiv2 * 2 + 1));
+  vec4 textureValue = texture2D(image, uv);
+      
   gl_FragColor = textureValue;
 }
 `
