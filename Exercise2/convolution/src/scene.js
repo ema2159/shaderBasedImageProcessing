@@ -115,6 +115,8 @@ function init() {
         centerX: {type: "f", value: 0.0},
         centerY: {type: "f", value: 0.0},
         image: {type: "t", value: videoTexture},
+	sigma: {type: "f", value: 5.0},
+	kernelSize: {type: "i", value: 31.0},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
