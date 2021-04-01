@@ -18,10 +18,10 @@ vec2 scale_coord(vec2 pt, float scale) {
 void main(void) {
   vec2 cellSize = 1.0 / resolution.xy;
   vec2 center = vec2(centerX, centerY);
-  vec2 uv = vUv.xy + center;
-  vec2 uv2 = vUv.xy;
+  vec2 uv = vUv.xy;
+  vec2 uv2 = vUv.xy + center;
 
-  uv = scale_coord(uv, scale);
+  uv2 = scale_coord(uv2, scale);
 
   vec4 textureValue = texture2D(image, uv);
   vec4 textureValue2 = texture2D(image2, uv2);
