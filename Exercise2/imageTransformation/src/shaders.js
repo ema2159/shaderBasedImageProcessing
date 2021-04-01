@@ -14,7 +14,6 @@ uniform vec2 resolution;
 uniform float scale;
 uniform float centerX;
 uniform float centerY;
-uniform int operation;
 
 varying vec2 vUv;
 
