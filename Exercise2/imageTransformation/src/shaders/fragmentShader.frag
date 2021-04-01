@@ -1,5 +1,4 @@
 precision highp float;
-const int kernelSizeDiv2 = 2;
 uniform sampler2D image;
 uniform vec2 resolution;
 uniform float scale;
