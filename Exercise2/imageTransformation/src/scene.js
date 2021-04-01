@@ -17,7 +17,7 @@ function IVimageProcessing(height, width, imageProcessingMaterial) {
     minFilter: THREE.NearestFilter,
     magFilter: THREE.NearestFilter,
     format: THREE.RGBAFormat,
-    //            type:THREE.FloatType
+               // type:THREE.FloatType
     type: THREE.UnsignedByteType,
   };
   this.rtt = new THREE.WebGLRenderTarget(width, height, options);
@@ -178,7 +178,7 @@ function init() {
     };
 
     gui = new GUI();
-    // Image arithmetic
+    // Image scaling
     gui
       .add(imageProcessingMaterial.uniforms.scale, "value", 0.1, 2)
       .name("Scale");
@@ -188,11 +188,6 @@ function init() {
     gui
       .add(imageProcessingMaterial.uniforms.centerY, "value", 0, 1)
       .name("CenterY");
-      .add(imageProcessingMaterial.uniforms.operation, "value", {Sum: 0, Sub: 1, Mult: 2, Div: 3})
-      .name("Operation");
-    gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
-    gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
-
     video.play();
   };
 
