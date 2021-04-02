@@ -6,6 +6,8 @@ uniform float scale;
 uniform float centerX;
 uniform float centerY;
 uniform int operation;
+uniform float scaleFactor;
+uniform float offset;
 
 varying vec2 vUv;
 
@@ -35,5 +37,5 @@ void main(void) {
     textureValue.rgb /= textureValue2.rgb;
   }
 
-  gl_FragColor = textureValue;
+  gl_FragColor = textureValue*scaleFactor+offset;
 }

@@ -121,6 +121,8 @@ function init() {
         image: {type: "t", value: videoTexture},
         image2: {type: "t", value: imageTexture},
         operation: {type: "i", value: 0},
+        scaleFactor: {type: "f", value: 1.0},
+        offset: {type: "f", value: 0.0},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
@@ -196,6 +198,13 @@ function init() {
     gui
       .add(imageProcessingMaterial.uniforms.operation, "value", {Sum: 0, Sub: 1, Mult: 2, Div: 3})
       .name("Operation");
+    gui
+      .add(imageProcessingMaterial.uniforms.scaleFactor, "value", 0.1, 2)
+      .name("Scale Factor");
+    gui
+      .add(imageProcessingMaterial.uniforms.offset, "value", -1, 1)
+      .name("Offset");
+    // Video controls
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
 
