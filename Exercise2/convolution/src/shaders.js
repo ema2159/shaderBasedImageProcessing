@@ -21,8 +21,7 @@ varying vec2 vUv;
 // pos: position of pixel in the kernel
 // sigma: standard deviation of gaussian kernel
 float get_gauss_pix(vec2 pos, float sigma) {
-  return exp(-((pow(pos.x, 2.0) + pow(pos.y, 2.0)) / (2.0 * pow(sigma, 2.0)))) /
-         (PI2 * pow(sigma, 2.0));
+  return exp(-((pow(pos.x, 2.0) + pow(pos.y, 2.0)) / (2.0 * pow(sigma, 2.0))));
 }
 
 void main(void) {
