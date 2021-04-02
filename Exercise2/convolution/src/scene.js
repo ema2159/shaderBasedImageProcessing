@@ -183,7 +183,7 @@ function init() {
       .add(imageProcessingMaterial.uniforms.sigma, "value", 1, 5, 1)
       .name("Sigma");
     gui
-      .add(imageProcessingMaterial.uniforms.kernelSize, "value", 0, 31, 1)
+      .add(imageProcessingMaterial.uniforms.kernelSize, "value", 1, 31, 1)
       .name("Kernel Size");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
