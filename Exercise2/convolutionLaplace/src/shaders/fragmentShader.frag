@@ -3,6 +3,7 @@ uniform float sigma;
 uniform int kernelSize;
 uniform sampler2D image;
 uniform vec2 resolution;
+uniform bool norm;
 
 varying vec2 vUv;
 
@@ -35,5 +36,8 @@ void main(void) {
   }
 
   textureValue /= kernelSum;
+  if(norm) {
+    textureValue = normalize(textureValue);
+  }
   gl_FragColor = textureValue;
 }

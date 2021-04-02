@@ -117,6 +117,7 @@ function init() {
         image: {type: "t", value: videoTexture},
 	sigma: {type: "f", value: 1.0},
 	kernelSize: {type: "i", value: 1.0},
+	norm: {type: "b", value: false},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
@@ -185,6 +186,9 @@ function init() {
     gui
       .add(imageProcessingMaterial.uniforms.kernelSize, "value", 1, 31, 1)
       .name("Kernel Size");
+    gui
+      .add(imageProcessingMaterial.uniforms.norm, "value", "checkbox")
+      .name("Normalize");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
     video.play();
