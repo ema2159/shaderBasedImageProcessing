@@ -8,8 +8,6 @@ void main() {
 `
 const fragmentShader = `
 precision highp float;
-uniform float sigma;
-uniform int kernelSize;
 uniform sampler2D image;
 uniform vec2 resolution;
 uniform bool norm;
