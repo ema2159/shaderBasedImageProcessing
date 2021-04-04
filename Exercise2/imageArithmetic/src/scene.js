@@ -95,7 +95,7 @@ function init() {
   controls.update();
 
   video = document.createElement("video");
-  video.src = "./assets/video.mp4";
+  video.src = "../../assets/video.mp4";
   video.load();
   video.muted = true;
   video.loop = true;
@@ -108,7 +108,7 @@ function init() {
     videoTexture.generateMipmaps = false;
     videoTexture.format = THREE.RGBFormat;
 
-    const imageTexture = new THREE.TextureLoader().load('./assets/image1.jpg');
+    const imageTexture = new THREE.TextureLoader().load('../../assets/image1.jpg');
 
     imageTexture.wrapS = imageTexture.wrapT = THREE.RepeatWrapping;
 
