@@ -112,7 +112,7 @@ function init() {
       uniforms: {
 	// Image scaling
         image: {type: "t", value: videoTexture},
-	norm: {type: "b", value: false},
+        hueShift: {type: "f", value: 0.0},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
@@ -174,10 +174,10 @@ function init() {
     };
 
     gui = new GUI();
-    // Image convolution
+    // Color transformation
     gui
-      .add(imageProcessingMaterial.uniforms.norm, "value", "checkbox")
-      .name("Normalize");
+      .add(imageProcessingMaterial.uniforms.hueShift, "value", 0, 360)
+      .name("Hue Shift");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
     video.play();
