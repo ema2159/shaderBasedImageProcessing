@@ -36,7 +36,7 @@ void main(void) {
   }
 
   if (norm) {
-    textureValue = normalize(textureValue);
+    textureValue.rgb = normalize(textureValue.rgb);
   }
   gl_FragColor = textureValue;
 }
