@@ -140,7 +140,7 @@ function init() {
       map: imageProcessing.rtt.texture,
       side: THREE.DoubleSide,
     });
-    plane = new THREE.Mesh(geometry, material);
+    plane = new THREE.Mesh(geometry, imageProcessingMaterial);
     plane.receiveShadow = false;
     plane.castShadow = false;
     scene.add(plane);
