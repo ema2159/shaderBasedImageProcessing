@@ -61,6 +61,8 @@ void main(void) {
     textureValue = bilinear_iterp(uv, image, cellSize);
   } else if (interpolation == 1) {
     textureValue = nn_iterp(uv, image, cellSize);
+  } else if (interpolation == 2) {
+    textureValue = texture2D(image, uv).rgb;
   }
 
   gl_FragColor = vec4(textureValue, 1.0);
