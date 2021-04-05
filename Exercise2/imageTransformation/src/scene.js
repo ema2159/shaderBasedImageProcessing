@@ -122,6 +122,7 @@ function init() {
       },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
+      side: THREE.DoubleSide,
     });
 
     imageProcessing = new IVimageProcessing(
@@ -134,7 +135,9 @@ function init() {
 
     var geometry = new THREE.PlaneGeometry(
       1,
-      video.videoHeight / video.videoWidth
+      video.videoHeight / video.videoWidth,
+      100,
+      100
     );
     var material = new THREE.MeshBasicMaterial({
       map: imageProcessing.rtt.texture,
