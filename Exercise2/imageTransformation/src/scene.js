@@ -113,6 +113,7 @@ function init() {
 	// Image scaling
         scaleX: {type: "f", value: 1.0},
         scaleY: {type: "f", value: 1.0},
+        interpolation: {type: "i", value: 0},
         image: {type: "t", value: videoTexture},
         resolution: {
           type: "2f",
@@ -185,6 +186,9 @@ function init() {
     gui
       .add(imageProcessingMaterial.uniforms.scaleY, "value", 0.1, 2)
       .name("Scale Y");
+    gui
+      .add(imageProcessingMaterial.uniforms.interpolation, "value", {Bilinear: 0, Nearest: 1})
+      .name("Interp. Method");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
     video.play();
