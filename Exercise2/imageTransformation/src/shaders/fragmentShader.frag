@@ -2,8 +2,7 @@ precision highp float;
 uniform sampler2D image;
 uniform vec2 resolution;
 uniform float scale;
-uniform float centerX;
-uniform float centerY;
+uniform int interpolation;
 
 varying vec2 vUv;
 
@@ -33,9 +32,12 @@ void main(void) {
   vec2 cellSize = 1.0 / resolution.xy;
   vec2 uv = vUv.xy;
 
-  vec3 textureValue = nn_iterp(uv, image, cellSize);
-  // vec3 textureValue = bilinear_iterp(uv, image, cellSize);
-  // vec3 textureValue = texture2D(image, uv).rgb;
+  vec3 textureValue;
+  if (interpolation == 0) {
+    textureValue = bilinear_iterp(uv, image, cellSize);
+  } else if (interpolation == 1) {
+    textureValue = nn_iterp(uv, image, cellSize);
+  }
 
   gl_FragColor = vec4(textureValue, 1.0);
 }
