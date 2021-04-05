@@ -111,9 +111,6 @@ function init() {
     imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
 	// Image scaling
-        scale: {type: "f", value: 1.0},
-        centerX: {type: "f", value: 0.0},
-        centerY: {type: "f", value: 0.0},
         image: {type: "t", value: videoTexture},
         resolution: {
           type: "2f",
@@ -181,14 +178,7 @@ function init() {
     gui = new GUI();
     // Image scaling
     gui
-      .add(imageProcessingMaterial.uniforms.scale, "value", 0.1, 2)
-      .name("Scale");
     gui
-      .add(imageProcessingMaterial.uniforms.centerX, "value", 0, 1)
-      .name("CenterX");
-    gui
-      .add(imageProcessingMaterial.uniforms.centerY, "value", 0, 1)
-      .name("CenterY");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
     video.play();
