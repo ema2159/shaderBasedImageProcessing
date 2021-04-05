@@ -42,17 +42,24 @@ vec3 bilinear_iterp(vec2 frag_pos, sampler2D image, vec2 cellSize) {
   vec3 vert = mix(horiz1, horiz2, frag_pos.y);
   return vert;
 }
+
+vec3 nn_iterp(vec2 frag_pos, sampler2D image, vec2 cellSize) {
+  vec2 pix_mod = mod(frag_pos, cellSize);
+  float h_coord = (pix_mod.x <= 0.5) ? frag_pos.x - pix_mod.x : frag_pos.x - pix_mod.x + cellSize.x;
+  float v_coord = (pix_mod.y <= 0.5) ? frag_pos.y - pix_mod.y : frag_pos.y - pix_mod.y + cellSize.y;
+  vec3 pix = texture2D(image, vec2(h_coord, v_coord)).rgb;
+  return pix;
 }
 
 void main(void) {
   vec2 cellSize = 1.0 / resolution.xy;
-  vec2 center = vec2(centerX, centerY);
-  vec2 uv = vUv.xy + center;
+  vec2 uv = vUv.xy;
 
-  uv = scale_coord(uv, scale);
-  vec4 textureValue = texture2D(image, uv);
-      
-  gl_FragColor = textureValue;
+  vec3 textureValue = nn_iterp(uv, image, cellSize);
+  // vec3 textureValue = bilinear_iterp(uv, image, cellSize);
+  // vec3 textureValue = texture2D(image, uv).rgb;
+
+  gl_FragColor = vec4(textureValue, 1.0);
 }
 `
 export {vertexShader, fragmentShader}
