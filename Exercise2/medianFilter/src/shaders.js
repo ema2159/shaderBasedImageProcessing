@@ -8,20 +8,32 @@ void main() {
 `
 const fragmentShader = `
 precision highp float;
-uniform float sigma;
 uniform int kernelSize;
 uniform sampler2D image;
 uniform vec2 resolution;
 
 varying vec2 vUv;
 
-#define PI 3.14159265358979323846
-#define PI2 6.28318530717958647692
+#define MAX_ARRAY_SIZE 100
 
-// pos: position of pixel in the kernel
-// sigma: standard deviation of gaussian kernel
-float get_gauss_pix(vec2 pos, float sigma) {
-  return exp(-((pow(pos.x, 2.0) + pow(pos.y, 2.0)) / (2.0 * pow(sigma, 2.0))));
+// int kernelSizeSquared = int(pow(float(kernelSize), 2.0));
+
+void insertionSort(inout vec4 arr[MAX_ARRAY_SIZE], int n) {
+  vec4 key;
+  int i, j;
+  for (i = 1; i < n; i++) {
+    key = arr[i];
+    j = i - 1;
+
+    /* Move elements of arr[0..i-1], that are
+      greater than key, to one position ahead
+      of their current position */
+    while (j >= 0 && length(arr[j]) > length(key)) {
+      arr[j + 1] = arr[j];
+      j = j - 1;
+    }
+    arr[j + 1] = key;
+  }
 }
 
 void main(void) {
@@ -30,19 +42,18 @@ void main(void) {
 
   vec4 textureValue = vec4(0, 0, 0, 0);
   int kernelSizeDiv2 = kernelSize / 2;
+  int median_arr_size = int(pow(float(kernelSize), 2.0));
+  vec4[MAX_ARRAY_SIZE] median_arr;
 
-  float kernelSum = 0.0;
+  int count = 0;
   for (int i = -kernelSizeDiv2; i <= kernelSizeDiv2; i++) {
     for (int j = -kernelSizeDiv2; j <= kernelSizeDiv2; j++) {
-      float pix_gauss_val = get_gauss_pix(vec2(float(i), float(j)), sigma);
-      kernelSum += pix_gauss_val;
-      textureValue +=
-          pix_gauss_val * texture2D(image, uv + vec2(float(i) * cellSize.x,
-                                                     float(j) * cellSize.y));
+      median_arr[count] = texture2D(
+          image, uv + vec2(float(i) * cellSize.x, float(j) * cellSize.y));
+      count++;
     }
   }
 
-  textureValue /= kernelSum;
   gl_FragColor = textureValue;
 }
 `
