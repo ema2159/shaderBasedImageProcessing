@@ -117,6 +117,7 @@ function init() {
         image: {type: "t", value: videoTexture},
 	sigma: {type: "f", value: 1.0},
 	kernelSize: {type: "i", value: 1.0},
+	pass: {type: "i", value: 0.0},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
@@ -138,10 +139,21 @@ function init() {
       1,
       video.videoHeight / video.videoWidth
     );
-    var material = new THREE.MeshBasicMaterial({
-      map: imageProcessing.rtt.texture,
-      side: THREE.DoubleSide,
+    var material = new THREE.ShaderMaterial({
+      uniforms: {
+        image: {type: "t", value: imageProcessing.rtt.texture},
+	sigma: {type: "f", value: 1.0},
+	kernelSize: {type: "i", value: 1.0},
+	pass: {type: "i", value: 1.0},
+        resolution: {
+          type: "2f",
+          value: new THREE.Vector2(video.videoWidth, video.videoHeight),
+        },
+      },
+      vertexShader: vertexShader,
+      fragmentShader: fragmentShader,
     });
+
     plane = new THREE.Mesh(geometry, material);
     plane.receiveShadow = false;
     plane.castShadow = false;
