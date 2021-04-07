@@ -113,7 +113,7 @@ function init() {
         image: {type: "t", value: videoTexture},
 	sigma: {type: "f", value: 1.0},
 	kernelSize: {type: "i", value: 1.0},
-	pass: {type: "i", value: 0.0},
+	firstPass: {type: "b", value: true},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(video.videoWidth, video.videoHeight),
@@ -139,7 +139,7 @@ function init() {
       uniforms: {
 	...imageProcessingMaterial.uniforms,
         image: {type: "t", value: imageProcessing.rtt.texture},
-	pass: {type: "i", value: 1.0},
+	firstPass: {type: "b", value: false},
       },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,

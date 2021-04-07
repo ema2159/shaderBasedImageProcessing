@@ -10,7 +10,7 @@ const fragmentShader = `
 precision highp float;
 uniform float sigma;
 uniform int kernelSize;
-uniform int pass;
+uniform bool firstPass;
 uniform sampler2D image;
 uniform vec2 resolution;
 
@@ -33,7 +33,7 @@ void main(void) {
   int kernelSizeDiv2 = kernelSize / 2;
 
   float kernelSum = 0.0;
-  if(pass==0) {
+  if(firstPass) {
     for (int i = -kernelSizeDiv2; i <= kernelSizeDiv2; i++) {
       float pix_gauss_val = get_gauss_pix1D(float(i), sigma);
       kernelSum += pix_gauss_val;
@@ -41,7 +41,7 @@ void main(void) {
 	pix_gauss_val * texture2D(image, uv + vec2(float(i) * cellSize.x,
 						   0.0));
     }
-  } else if(pass==1) {
+  } else {
     for (int j = -kernelSizeDiv2; j <= kernelSizeDiv2; j++) {
       float pix_gauss_val = get_gauss_pix1D(float(j), sigma);
       kernelSum += pix_gauss_val;
