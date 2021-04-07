@@ -15,9 +15,6 @@ uniform vec2 resolution;
 
 varying vec2 vUv;
 
-#define PI 3.14159265358979323846
-#define PI2 6.28318530717958647692
-
 // pos: position of pixel in the kernel
 // sigma: standard deviation of gaussian kernel
 float get_gauss_pix(vec2 pos, float sigma) {

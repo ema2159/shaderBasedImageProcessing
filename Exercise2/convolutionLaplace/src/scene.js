@@ -110,7 +110,6 @@ function init() {
 
     imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
-	// Image scaling
         image: {type: "t", value: videoTexture},
 	norm: {type: "b", value: false},
         resolution: {
