@@ -137,14 +137,9 @@ function init() {
     );
     var material = new THREE.ShaderMaterial({
       uniforms: {
+	...imageProcessingMaterial.uniforms,
         image: {type: "t", value: imageProcessing.rtt.texture},
-	sigma: {type: "f", value: 1.0},
-	kernelSize: {type: "i", value: 1.0},
 	pass: {type: "i", value: 1.0},
-        resolution: {
-          type: "2f",
-          value: new THREE.Vector2(video.videoWidth, video.videoHeight),
-        },
       },
       vertexShader: vertexShader,
       fragmentShader: fragmentShader,
