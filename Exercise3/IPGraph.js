@@ -11,7 +11,6 @@ import {lgVertexShader, lgFragmentShader} from "./shaders/LoGshaders.js";
  * @class IPFilter
  */
 class IPFilter {
-
   constructor(height, width, imageProcessingMaterial) {
     // Cannot call constructor of abstract class
     if (this.constructor == IPFilter) {
@@ -41,21 +40,21 @@ class IPFilter {
     geom.addAttribute(
       "position",
       new THREE.BufferAttribute(
-	new Float32Array(
-	  // prettier-ignore
-	  [-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0]
-	),
-	3
+        new Float32Array(
+          // prettier-ignore
+          [-1, -1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, 1, 0, -1, 1, 0]
+        ),
+        3
       )
     );
     geom.addAttribute(
       "uv",
       new THREE.BufferAttribute(
-	new Float32Array(
-	  // prettier-ignore
-	  [ 0,1, 1,1, 1,0, 0,1, 1,0, 0,0 ]
-	),
-	2
+        new Float32Array(
+          // prettier-ignore
+          [ 0,1, 1,1, 1,0, 0,1, 1,0, 0,0 ]
+        ),
+        2
       )
     );
     this.scene.add(new THREE.Mesh(geom, imageProcessingMaterial));
@@ -64,7 +63,6 @@ class IPFilter {
   getMaterial() {
     return this.material;
   }
-
 }
 
 /**
@@ -73,19 +71,18 @@ class IPFilter {
  * @class Scaling
  */
 class Scaling extends IPFilter {
-
-  constructor(height, width, texture, uniformsParam={}) {
+  constructor(height, width, texture, uniformsParam = {}) {
     let imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
-	scaleX: {type: "f", value: 1.0},
-	scaleY: {type: "f", value: 1.0},
-	interpolation: {type: "i", value: 0},
-	image: {type: "t", value: texture},
-	resolution: {
-	  type: "2f",
-	  value: new THREE.Vector2(width, height),
-	},
-	...uniformsParam
+        scaleX: {type: "f", value: 1.0},
+        scaleY: {type: "f", value: 1.0},
+        interpolation: {type: "i", value: 0},
+        image: {type: "t", value: texture},
+        resolution: {
+          type: "2f",
+          value: new THREE.Vector2(width, height),
+        },
+        ...uniformsParam,
       },
       vertexShader: scVertexShader,
       fragmentShader: scFragmentShader,
@@ -93,7 +90,6 @@ class Scaling extends IPFilter {
     });
     super(height, width, imageProcessingMaterial);
   }
-
 }
 
 /**
@@ -102,8 +98,7 @@ class Scaling extends IPFilter {
  * @class IArithmetic
  */
 class IArithmetic extends IPFilter {
-
-  constructor(height, width, texture, texture2, uniformsParam={}) {
+  constructor(height, width, texture, texture2, uniformsParam = {}) {
     let imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
         scale: {type: "f", value: 1.0},
@@ -116,9 +111,9 @@ class IArithmetic extends IPFilter {
         offset: {type: "f", value: 0.0},
         resolution: {
           type: "2f",
-	  value: new THREE.Vector2(width, height),
+          value: new THREE.Vector2(width, height),
         },
-	...uniformsParam
+        ...uniformsParam,
       },
       vertexShader: iaVertexShader,
       fragmentShader: iaFragmentShader,
@@ -126,7 +121,6 @@ class IArithmetic extends IPFilter {
     });
     super(height, width, imageProcessingMaterial);
   }
-
 }
 
 /**
@@ -135,18 +129,17 @@ class IArithmetic extends IPFilter {
  * @class GaussFilter
  */
 class GaussFilter extends IPFilter {
-
-  constructor(height, width, texture, uniformsParam={}) {
+  constructor(height, width, texture, uniformsParam = {}) {
     let imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
         image: {type: "t", value: texture},
-	sigma: {type: "f", value: 1.0},
-	kernelSize: {type: "i", value: 1.0},
+        sigma: {type: "f", value: 1.0},
+        kernelSize: {type: "i", value: 1.0},
         resolution: {
           type: "2f",
-	  value: new THREE.Vector2(width, height),
+          value: new THREE.Vector2(width, height),
         },
-	...uniformsParam
+        ...uniformsParam,
       },
       vertexShader: cgVertexShader,
       fragmentShader: cgFragmentShader,
@@ -154,7 +147,6 @@ class GaussFilter extends IPFilter {
     });
     super(height, width, imageProcessingMaterial);
   }
-
 }
 
 /**
@@ -163,17 +155,16 @@ class GaussFilter extends IPFilter {
  * @class LaplaceFilter
  */
 class LaplaceFilter extends IPFilter {
-
-  constructor(height, width, texture, uniformsParam={}) {
+  constructor(height, width, texture, uniformsParam = {}) {
     let imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
         image: {type: "t", value: texture},
-	norm: {type: "b", value: false},
+        norm: {type: "b", value: false},
         resolution: {
           type: "2f",
-	  value: new THREE.Vector2(width, height),
+          value: new THREE.Vector2(width, height),
         },
-	...uniformsParam
+        ...uniformsParam,
       },
       vertexShader: clVertexShader,
       fragmentShader: clFragmentShader,
@@ -181,7 +172,6 @@ class LaplaceFilter extends IPFilter {
     });
     super(height, width, imageProcessingMaterial);
   }
-
 }
 
 /**
@@ -190,19 +180,18 @@ class LaplaceFilter extends IPFilter {
  * @class LoGFilter
  */
 class LoGFilter extends IPFilter {
-
-  constructor(height, width, texture, uniformsParam={}) {
+  constructor(height, width, texture, uniformsParam = {}) {
     let imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
         image: {type: "t", value: texture},
-	sigma: {type: "f", value: 1.0},
-	kernelSize: {type: "i", value: 1.0},
-	norm: {type: "b", value: false},
+        sigma: {type: "f", value: 1.0},
+        kernelSize: {type: "i", value: 1.0},
+        norm: {type: "b", value: false},
         resolution: {
           type: "2f",
-	  value: new THREE.Vector2(width, height),
+          value: new THREE.Vector2(width, height),
         },
-	...uniformsParam
+        ...uniformsParam,
       },
       vertexShader: lgVertexShader,
       fragmentShader: lgFragmentShader,
@@ -210,7 +199,6 @@ class LoGFilter extends IPFilter {
     });
     super(height, width, imageProcessingMaterial);
   }
-
 }
 
-export { Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter };
+export {Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter};
