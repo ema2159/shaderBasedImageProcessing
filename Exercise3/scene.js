@@ -120,16 +120,6 @@ function init() {
     };
 
     gui = new GUI();
-    // Image scaling
-    gui
-      .add(imageProcessingMaterial.uniforms.scaleX, "value", 0.1, 3)
-      .name("Scale X");
-    gui
-      .add(imageProcessingMaterial.uniforms.scaleY, "value", 0.1, 3)
-      .name("Scale Y");
-    gui
-      .add(imageProcessingMaterial.uniforms.interpolation, "value", {Bilinear: 0, Nearest: 1, NoInterp: 2})
-      .name("Interp. Method");
     gui.add(pausePlayObj, "pausePlay").name("Pause/play video");
     gui.add(pausePlayObj, "add10sec").name("Add 10 seconds");
     video.play();
