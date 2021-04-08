@@ -53,7 +53,7 @@ function init() {
   controls.update();
 
   video = document.createElement("video");
-  video.src = "../../assets/video.mp4";
+  video.src = "./assets/video.mp4";
   video.load();
   video.muted = true;
   video.loop = true;
