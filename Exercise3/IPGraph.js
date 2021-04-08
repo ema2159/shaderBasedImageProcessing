@@ -13,6 +13,8 @@ class IPFilter {
     this.height = height;
     this.width = width;
 
+    this.material = imageProcessingMaterial;
+
     //3 rtt setup
     this.scene = new THREE.Scene();
     // prettier-ignore
@@ -50,6 +52,10 @@ class IPFilter {
       )
     );
     this.scene.add(new THREE.Mesh(geom, imageProcessingMaterial));
+  }
+
+  getMaterial() {
+    return this.material;
   }
 
 }
