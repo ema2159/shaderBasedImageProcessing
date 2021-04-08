@@ -58,6 +58,13 @@ class IPFilter {
       )
     );
     this.scene.add(new THREE.Mesh(geom, imageProcessingMaterial));
+
+  }
+
+  initializeRenderer(renderer) {
+    renderer.setRenderTarget(this.rtt);
+    renderer.render(this.scene, this.orthoCamera);
+    renderer.setRenderTarget(null);
   }
 
   getMaterial() {

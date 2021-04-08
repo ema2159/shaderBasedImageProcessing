@@ -4,12 +4,6 @@ import {GUI} from "https://unpkg.com/three/examples/jsm/libs/dat.gui.module.js";
 import * as IPGraph from "./IPGraph.js";
 
 
-function IVprocess(imageProcessing, renderer) {
-  renderer.setRenderTarget(imageProcessing.rtt);
-  renderer.render(imageProcessing.scene, imageProcessing.orthoCamera);
-  renderer.setRenderTarget(null);
-}
-
 var camera, controls, scene, renderer, container;
 var plane;
 
@@ -131,8 +125,9 @@ function init() {
 function render() {
   renderer.clear();
 
-  if (typeof imageProcessing !== "undefined")
-    IVprocess(imageProcessing, renderer);
+  if (typeof imageProcessing !== "undefined") {
+    imageProcessing.initializeRenderer(renderer);
+  }
   renderer.render(scene, camera);
 }
 
