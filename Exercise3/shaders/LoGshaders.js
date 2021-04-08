@@ -1,12 +1,12 @@
-const vertexShader = `
+const lgVertexShader = `
 varying vec2 vUv;
 void main() {
-  vUv = vec2( uv.x, 1.0-uv.y );
+  vUv = vec2( uv.x, uv.y );
   gl_Position = projectionMatrix *
     modelViewMatrix * vec4(position, 1.0 );
 }
 `
-const fragmentShader = `
+const lgFragmentShader = `
 precision highp float;
 uniform float sigma;
 uniform int kernelSize;
@@ -20,7 +20,7 @@ varying vec2 vUv;
 // sigma: standard deviation of gaussian kernel
 float get_laplace_pix(vec2 pos, float sigma) {
   return (1.0 - ((pow(pos.x, 2.0) + pow(pos.y, 2.0)) / (2.0 * pow(sigma, 2.0)))) *
-         exp(-((pow(pos.x, 2.0) + pow(pos.y, 2.0)) / (2.0 * pow(sigma, 2.0))));
+	 exp(-((pow(pos.x, 2.0) + pow(pos.y, 2.0)) / (2.0 * pow(sigma, 2.0))));
 }
 
 void main(void) {
@@ -36,8 +36,8 @@ void main(void) {
       float pix_gauss_val = get_laplace_pix(vec2(float(i), float(j)), sigma);
       kernelSum += pix_gauss_val;
       textureValue +=
-          pix_gauss_val * texture2D(image, uv + vec2(float(i) * cellSize.x,
-                                                     float(j) * cellSize.y));
+	  pix_gauss_val * texture2D(image, uv + vec2(float(i) * cellSize.x,
+						     float(j) * cellSize.y));
     }
   }
 
@@ -48,4 +48,4 @@ void main(void) {
   gl_FragColor = textureValue;
 }
 `
-export {vertexShader, fragmentShader}
+export {lgVertexShader, lgFragmentShader}

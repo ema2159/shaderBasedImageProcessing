@@ -3,6 +3,7 @@ import {scVertexShader, scFragmentShader} from "./shaders/SCshaders.js";
 import {iaVertexShader, iaFragmentShader} from "./shaders/IAshaders.js";
 import {cgVertexShader, cgFragmentShader} from "./shaders/CGshaders.js";
 import {clVertexShader, clFragmentShader} from "./shaders/CLshaders.js";
+import {lgVertexShader, lgFragmentShader} from "./shaders/LoGshaders.js";
 
 /**
  * Abstract Class IPFilter.
@@ -183,4 +184,33 @@ class LaplaceFilter extends IPFilter {
 
 }
 
-export { Scaling, IArithmetic, GaussFilter, LaplaceFilter };
+/**
+ * Class LoGFilter.
+ *
+ * @class LoGFilter
+ */
+class LoGFilter extends IPFilter {
+
+  constructor(height, width, texture, uniformsParam={}) {
+    let imageProcessingMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        image: {type: "t", value: texture},
+	sigma: {type: "f", value: 1.0},
+	kernelSize: {type: "i", value: 1.0},
+	norm: {type: "b", value: false},
+        resolution: {
+          type: "2f",
+	  value: new THREE.Vector2(width, height),
+        },
+	...uniformsParam
+      },
+      vertexShader: lgVertexShader,
+      fragmentShader: lgFragmentShader,
+      side: THREE.DoubleSide,
+    });
+    super(height, width, imageProcessingMaterial);
+  }
+
+}
+
+export { Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter };
