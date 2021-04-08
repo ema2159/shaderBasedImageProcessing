@@ -1,3 +1,5 @@
+import * as THREE from "https://unpkg.com/three/build/three.module.js";
+import {scVertexShader, scFragmentShader} from "./shaders/SCshaders.js";
 /**
  * Abstract Class IPFilter.
  *
@@ -61,11 +63,33 @@ class IPFilter {
 }
 
 /**
- * Abstract Class Scaling.
+ * Class Scaling.
  *
  * @class Scaling
  */
 class Scaling extends IPFilter {
+
+  constructor(height, width, texture, uniformsParam={}) {
+    let imageProcessingMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+	scaleX: {type: "f", value: 1.0},
+	scaleY: {type: "f", value: 1.0},
+	interpolation: {type: "i", value: 0},
+	image: {type: "t", value: texture},
+	resolution: {
+	  type: "2f",
+	  value: new THREE.Vector2(width, height),
+	},
+	...uniformsParam
+      },
+      vertexShader: scVertexShader,
+      fragmentShader: scFragmentShader,
+      side: THREE.DoubleSide,
+    });
+    super(height, width, imageProcessingMaterial);
+  }
+
+}
 
   constructor(height, width, imageProcessingMaterial) {
     super(height, width, imageProcessingMaterial);
