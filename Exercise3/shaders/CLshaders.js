@@ -1,12 +1,12 @@
-const vertexShader = `
+const clVertexShader = `
 varying vec2 vUv;
 void main() {
-  vUv = vec2( uv.x, 1.0-uv.y );
+  vUv = vec2( uv.x, uv.y );
   gl_Position = projectionMatrix *
     modelViewMatrix * vec4(position, 1.0 );
 }
 `
-const fragmentShader = `
+const clFragmentShader = `
 precision highp float;
 uniform sampler2D image;
 uniform vec2 resolution;
@@ -30,8 +30,8 @@ void main(void) {
   for (int i = -kernelSizeDiv2; i <= kernelSizeDiv2; i++) {
     for (int j = -kernelSizeDiv2; j <= kernelSizeDiv2; j++) {
       textureValue.rgb += lapl_mat[i + kernelSizeDiv2][j + kernelSizeDiv2] *
-                          texture2D(image, uv + vec2(float(i) * cellSize.x,
-                                                     float(j) * cellSize.y)).rgb;
+			  texture2D(image, uv + vec2(float(i) * cellSize.x,
+						     float(j) * cellSize.y)).rgb;
     }
   }
 
@@ -41,4 +41,4 @@ void main(void) {
   gl_FragColor = textureValue;
 }
 `
-export {vertexShader, fragmentShader}
+export {clVertexShader, clFragmentShader}

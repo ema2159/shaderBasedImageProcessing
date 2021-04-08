@@ -2,6 +2,7 @@ import * as THREE from "https://unpkg.com/three/build/three.module.js";
 import {scVertexShader, scFragmentShader} from "./shaders/SCshaders.js";
 import {iaVertexShader, iaFragmentShader} from "./shaders/IAshaders.js";
 import {cgVertexShader, cgFragmentShader} from "./shaders/CGshaders.js";
+import {clVertexShader, clFragmentShader} from "./shaders/CLshaders.js";
 
 /**
  * Abstract Class IPFilter.
@@ -155,10 +156,31 @@ class GaussFilter extends IPFilter {
 
 }
 
-  constructor(height, width, imageProcessingMaterial) {
+/**
+ * Class LaplaceFilter.
+ *
+ * @class LaplaceFilter
+ */
+class LaplaceFilter extends IPFilter {
+
+  constructor(height, width, texture, uniformsParam={}) {
+    let imageProcessingMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        image: {type: "t", value: texture},
+	norm: {type: "b", value: false},
+        resolution: {
+          type: "2f",
+	  value: new THREE.Vector2(width, height),
+        },
+	...uniformsParam
+      },
+      vertexShader: clVertexShader,
+      fragmentShader: clFragmentShader,
+      side: THREE.DoubleSide,
+    });
     super(height, width, imageProcessingMaterial);
   }
 
 }
 
-export { Scaling, IArithmetic, GaussFilter };
+export { Scaling, IArithmetic, GaussFilter, LaplaceFilter };
