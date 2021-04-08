@@ -160,3 +160,5 @@ class GaussFilter extends IPFilter {
   }
 
 }
+
+export { Scaling, IArithmetic, GaussFilter };
