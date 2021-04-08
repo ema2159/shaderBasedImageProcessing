@@ -4,6 +4,7 @@ import {iaVertexShader, iaFragmentShader} from "./shaders/IAshaders.js";
 import {cgVertexShader, cgFragmentShader} from "./shaders/CGshaders.js";
 import {clVertexShader, clFragmentShader} from "./shaders/CLshaders.js";
 import {lgVertexShader, lgFragmentShader} from "./shaders/LoGshaders.js";
+import {sgVertexShader, sgFragmentShader} from "./shaders/SGshaders.js";
 
 /**
  * Abstract Class IPFilter.
@@ -208,4 +209,66 @@ class LoGFilter extends IPFilter {
   }
 }
 
-export {Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter};
+/**
+ * Class SGFilter.
+ *
+ * @class SGFilter
+ */
+class SGFilter extends IPFilter {
+  constructor(height, width, texture, uniformsParam = {}, fstPass = false) {
+    let intermediateRTT;
+    let texturePass = texture;
+    // This is a shield for the first pass. If on second pass, then create a first pass intermediate
+    // RTT object. If on first pass, don't create any intermediate RTT object.
+    if (!fstPass) {
+      intermediateRTT = new SGFilter(
+        height,
+        width,
+        texture,
+        {
+          sigma: {type: "f", value: 1.0},
+          kernelSize: {type: "i", value: 1.0},
+          resolution: {
+            type: "2f",
+            value: new THREE.Vector2(width, height),
+          },
+          firstPass: {type: "b", value: true},
+          ...uniformsParam,
+        },
+	fstPass = true
+      );
+      texturePass = intermediateRTT.rtt.texture;
+    }
+    let imageProcessingMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        image: {type: "t", value: texturePass},
+        sigma: {type: "f", value: 1.0},
+        kernelSize: {type: "i", value: 1.0},
+        resolution: {
+          type: "2f",
+          value: new THREE.Vector2(width, height),
+        },
+        firstPass: {type: "b", value: false},
+        ...uniformsParam,
+      },
+      vertexShader: sgVertexShader,
+      fragmentShader: sgFragmentShader,
+      side: THREE.DoubleSide,
+    });
+    super(height, width, imageProcessingMaterial);
+    this.intermediate = intermediateRTT;
+  }
+
+  initializeRenderer(renderer) {
+    renderer.setRenderTarget(this.rtt);
+    renderer.render(this.scene, this.orthoCamera);
+    renderer.setRenderTarget(null);
+    if(typeof this.intermediate !== 'undefined') {
+      renderer.setRenderTarget(this.intermediate.rtt);
+      renderer.render(this.intermediate.scene, this.intermediate.orthoCamera);
+      renderer.setRenderTarget(null);
+    }
+  }
+}
+
+export {Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter, SGFilter};

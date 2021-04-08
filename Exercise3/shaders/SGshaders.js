@@ -1,12 +1,12 @@
-const vertexShader = `
+const sgVertexShader = `
 varying vec2 vUv;
 void main() {
-  vUv = vec2( uv.x, 1.0-uv.y );
+  vUv = vec2( uv.x, uv.y );
   gl_Position = projectionMatrix *
     modelViewMatrix * vec4(position, 1.0 );
 }
 `
-const fragmentShader = `
+const sgFragmentShader = `
 precision highp float;
 uniform float sigma;
 uniform int kernelSize;
@@ -53,4 +53,4 @@ void main(void) {
   gl_FragColor = textureValue;
 }
 `
-export {vertexShader, fragmentShader}
+export {sgVertexShader, sgFragmentShader}
