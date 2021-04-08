@@ -1,4 +1,4 @@
-const vertexShader = `
+const iaVertexShader = `
 varying vec2 vUv;
 void main() {
   vUv = vec2( uv.x, 1.0-uv.y );
@@ -6,7 +6,7 @@ void main() {
     modelViewMatrix * vec4(position, 1.0 );
 }
 `
-const fragmentShader = `
+const iaFragmentShader = `
 precision highp float;
 uniform sampler2D image;
 uniform sampler2D image2;
@@ -49,4 +49,4 @@ void main(void) {
   gl_FragColor = textureValue*scaleFactor+offset;
 }
 `
-export {vertexShader, fragmentShader}
+export {iaVertexShader, iaFragmentShader}

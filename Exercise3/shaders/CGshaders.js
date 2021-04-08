@@ -1,4 +1,4 @@
-const vertexShader = `
+const cgVertexShader = `
 varying vec2 vUv;
 void main() {
   vUv = vec2( uv.x, 1.0-uv.y );
@@ -6,7 +6,7 @@ void main() {
     modelViewMatrix * vec4(position, 1.0 );
 }
 `
-const fragmentShader = `
+const cgFragmentShader = `
 precision highp float;
 uniform float sigma;
 uniform int kernelSize;
@@ -43,4 +43,4 @@ void main(void) {
   gl_FragColor = textureValue;
 }
 `
-export {vertexShader, fragmentShader}
+export {cgVertexShader, cgFragmentShader}
