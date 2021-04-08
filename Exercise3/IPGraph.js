@@ -1,5 +1,6 @@
 import * as THREE from "https://unpkg.com/three/build/three.module.js";
 import {scVertexShader, scFragmentShader} from "./shaders/SCshaders.js";
+import {iaVertexShader, iaFragmentShader} from "./shaders/IAshaders.js";
 /**
  * Abstract Class IPFilter.
  *
@@ -84,6 +85,39 @@ class Scaling extends IPFilter {
       },
       vertexShader: scVertexShader,
       fragmentShader: scFragmentShader,
+      side: THREE.DoubleSide,
+    });
+    super(height, width, imageProcessingMaterial);
+  }
+
+}
+
+/**
+ * Class IArithmetic.
+ *
+ * @class IArithmetic
+ */
+class IArithmetic extends IPFilter {
+
+  constructor(height, width, texture, texture2, uniformsParam={}) {
+    let imageProcessingMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        scale: {type: "f", value: 1.0},
+        centerX: {type: "f", value: 0.0},
+        centerY: {type: "f", value: 0.0},
+        image: {type: "t", value: texture},
+        image2: {type: "t", value: texture2},
+        operation: {type: "i", value: 0},
+        scaleFactor: {type: "f", value: 1.0},
+        offset: {type: "f", value: 0.0},
+        resolution: {
+          type: "2f",
+	  value: new THREE.Vector2(width, height),
+        },
+	...uniformsParam
+      },
+      vertexShader: iaVertexShader,
+      fragmentShader: iaFragmentShader,
       side: THREE.DoubleSide,
     });
     super(height, width, imageProcessingMaterial);
