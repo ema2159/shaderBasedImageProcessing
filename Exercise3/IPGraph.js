@@ -12,18 +12,24 @@ import {sgVertexShader, sgFragmentShader} from "./shaders/SGshaders.js";
  * @class IPFilter
  */
 class IPFilter {
+  #material;
+  #scene;
+  #orthoCamera;
+  #rtt;
+
   constructor(height, width, imageProcessingMaterial) {
     // Cannot call constructor of abstract class
     if (this.constructor == IPFilter) {
       throw new Error("Abstract classes can't be instantiated.");
     }
 
-    this.material = imageProcessingMaterial;
+    // Material to return
+    this.#material = imageProcessingMaterial;
 
     //3 rtt setup
-    this.scene = new THREE.Scene();
+    this.#scene = new THREE.Scene();
     // prettier-ignore
-    this.orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1 / Math.pow(2, 53), 1);
+    this.#orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1 / Math.pow(2, 53), 1);
 
     //4 create a target texture
     let options = {
@@ -33,7 +39,7 @@ class IPFilter {
       // type:THREE.FloatType
       type: THREE.UnsignedByteType,
     };
-    this.rtt = new THREE.WebGLRenderTarget(width, height, options);
+    this.#rtt = new THREE.WebGLRenderTarget(width, height, options);
 
     let geom = new THREE.BufferGeometry();
     geom.addAttribute(
@@ -56,18 +62,31 @@ class IPFilter {
         2
       )
     );
-    this.scene.add(new THREE.Mesh(geom, imageProcessingMaterial));
+    this.#scene.add(new THREE.Mesh(geom, imageProcessingMaterial));
 
   }
 
   initializeRenderer(renderer) {
-    renderer.setRenderTarget(this.rtt);
-    renderer.render(this.scene, this.orthoCamera);
+    renderer.setRenderTarget(this.#rtt);
+    renderer.render(this.#scene, this.#orthoCamera);
     renderer.setRenderTarget(null);
   }
 
-  getMaterial() {
-    return this.material;
+  // Getter functions
+  get material() {
+    return this.#material;
+  }
+
+  get rtt() {
+    return this.#rtt;
+  }
+
+  get scene() {
+    return this.#scene;
+  }
+
+  get orthoCamera() {
+    return this.#orthoCamera;
   }
 }
 
@@ -213,6 +232,8 @@ class LoGFilter extends IPFilter {
  * @class SGFilter
  */
 class SGFilter extends IPFilter {
+  #intermediate;
+
   constructor(height, width, texture, uniformsParam = {}, fstPass = false) {
     let intermediateRTT;
     let texturePass = texture;
@@ -254,18 +275,21 @@ class SGFilter extends IPFilter {
       side: THREE.DoubleSide,
     });
     super(height, width, imageProcessingMaterial);
-    this.intermediate = intermediateRTT;
+    this.#intermediate = intermediateRTT;
   }
 
   initializeRenderer(renderer) {
-    renderer.setRenderTarget(this.rtt);
-    renderer.render(this.scene, this.orthoCamera);
-    renderer.setRenderTarget(null);
-    if(typeof this.intermediate !== 'undefined') {
-      renderer.setRenderTarget(this.intermediate.rtt);
-      renderer.render(this.intermediate.scene, this.intermediate.orthoCamera);
+    // Initialize intermediate step's renderer
+    if(typeof this.#intermediate !== 'undefined') {
+      renderer.setRenderTarget(this.#intermediate.rtt);
+      renderer.render(this.#intermediate.scene, this.#intermediate.orthoCamera);
       renderer.setRenderTarget(null);
     }
+    // Initialize final step's renderer (and next filter's if any)
+    super.initializeRenderer(renderer);
+  }
+}
+
   }
 }
 
