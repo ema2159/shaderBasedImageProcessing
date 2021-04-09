@@ -59,13 +59,12 @@ class IPFilter {
       new THREE.BufferAttribute(
         new Float32Array(
           // prettier-ignore
-	  [ 0,0, 1,0, 1,1, 0,0, 1,1, 0,1 ]
+          [ 0,0, 1,0, 1,1, 0,0, 1,1, 0,1 ]
         ),
         2
       )
     );
     this.#scene.add(new THREE.Mesh(geom, imageProcessingMaterial));
-
   }
 
   initializeRenderer(renderer) {
@@ -256,7 +255,7 @@ class SGFilter extends IPFilter {
           firstPass: {type: "b", value: true},
           ...uniformsParam,
         },
-	fstPass = true
+        (fstPass = true)
       );
       texturePass = intermediateRTT.rtt.texture;
     }
@@ -282,7 +281,7 @@ class SGFilter extends IPFilter {
 
   initializeRenderer(renderer) {
     // Initialize intermediate step's renderer
-    if(typeof this.#intermediate !== 'undefined') {
+    if (typeof this.#intermediate !== "undefined") {
       renderer.setRenderTarget(this.#intermediate.rtt);
       renderer.render(this.#intermediate.scene, this.#intermediate.orthoCamera);
       renderer.setRenderTarget(null);
@@ -302,7 +301,7 @@ class MedianFilter extends IPFilter {
     let imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
         image: {type: "t", value: texture},
-	kernelSize: {type: "i", value: 1.0},
+        kernelSize: {type: "i", value: 1.0},
         resolution: {
           type: "2f",
           value: new THREE.Vector2(width, height),
@@ -342,4 +341,13 @@ class CTFilter extends IPFilter {
   }
 }
 
-export {Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter, SGFilter, MedianFilter, CTFilter};
+export {
+  Scaling,
+  IArithmetic,
+  GaussFilter,
+  LaplaceFilter,
+  LoGFilter,
+  SGFilter,
+  MedianFilter,
+  CTFilter,
+};
