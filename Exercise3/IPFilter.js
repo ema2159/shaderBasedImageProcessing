@@ -246,14 +246,8 @@ class SGFilter extends IPFilter {
         width,
         texture,
         {
-          sigma: {type: "f", value: 1.0},
-          kernelSize: {type: "i", value: 1.0},
-          resolution: {
-            type: "2f",
-            value: new THREE.Vector2(width, height),
-          },
-          firstPass: {type: "b", value: true},
           ...uniformsParam,
+          firstPass: {type: "b", value: true},
         },
         (fstPass = true)
       );
