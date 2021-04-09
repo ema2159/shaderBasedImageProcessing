@@ -17,8 +17,6 @@ class IPFilter {
     if (this.constructor == IPFilter) {
       throw new Error("Abstract classes can't be instantiated.");
     }
-    this.height = height;
-    this.width = width;
 
     this.material = imageProcessingMaterial;
 
