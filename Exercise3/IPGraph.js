@@ -5,6 +5,7 @@ import {cgVertexShader, cgFragmentShader} from "./shaders/CGshaders.js";
 import {clVertexShader, clFragmentShader} from "./shaders/CLshaders.js";
 import {lgVertexShader, lgFragmentShader} from "./shaders/LoGshaders.js";
 import {sgVertexShader, sgFragmentShader} from "./shaders/SGshaders.js";
+import {mfVertexShader, mfFragmentShader} from "./shaders/MFshaders.js";
 
 /**
  * Abstract Class IPFilter.
@@ -290,7 +291,29 @@ class SGFilter extends IPFilter {
   }
 }
 
+/**
+ * Class MedianFilter.
+ *
+ * @class MedianFilter
+ */
+class MedianFilter extends IPFilter {
+  constructor(height, width, texture, uniformsParam = {}) {
+    let imageProcessingMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        image: {type: "t", value: texture},
+	kernelSize: {type: "i", value: 1.0},
+        resolution: {
+          type: "2f",
+          value: new THREE.Vector2(width, height),
+        },
+        ...uniformsParam,
+      },
+      vertexShader: mfVertexShader,
+      fragmentShader: mfFragmentShader,
+      side: THREE.DoubleSide,
+    });
+    super(height, width, imageProcessingMaterial);
   }
 }
 
-export {Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter, SGFilter};
+export {Scaling, IArithmetic, GaussFilter, LaplaceFilter, LoGFilter, SGFilter, MedianFilter};
