@@ -235,7 +235,7 @@ class SGFilter extends IPFilter {
   #intermediate;
 
   constructor(height, width, texture, uniformsParam = {}, fstPass = false) {
-    let intermediateRTT;
+    let intermediateRTT = null;
     let texturePass = texture;
     // This is a shield for the first pass. If on second pass, then create a first pass intermediate
     // RTT object. If on first pass, don't create any intermediate RTT object.
