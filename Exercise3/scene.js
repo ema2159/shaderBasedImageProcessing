@@ -11,7 +11,7 @@ var plane;
 // VIDEO AND THE ASSOCIATED TEXTURE
 var video, videoTexture;
 
-var imageProcessing, imageProcessingMaterial;
+let imageProcessing;
 
 // GUI
 var gui;
@@ -64,14 +64,23 @@ function init() {
     // Image Processing Graph
     imageProcessing = new IPGraph(video.videoHeight, video.videoWidth, videoTexture);
 
+    let ipSub = new IPGraph(video.videoHeight, video.videoWidth, videoTexture);
+    ipSub.addNode(IPFilter.SGFilter, {
+      sigma: {type: "f", value: 3.0},
+      kernelSize: {type: "i", value: 19.0},
+    });
+
     imageProcessing
-      .addNode(IPFilter.SGFilter, {
-	sigma: {type: "f", value: 5.0},
-	kernelSize: {type: "i", value: 31.0},
+      .addNode(IPFilter.MedianFilter, {
+	kernelSize: {type: "i", value: 3.0},
       })
-      .addNode(IPFilter.CTFilter, {
-        hueShift: {type: "f", value: 50.0},
+      .addNode(IPFilter.IArithmetic, {
+        image2: {type: "t", value: ipSub.outputTexture},
+        operation: {type: "i", value: 1},
+        scaleFactor: {type: "f", value: 1.9},
+        offset: {type: "f", value: 0.3},
       })
+      .subscribeSubGraph(ipSub)
       .addNode(IPFilter.Scaling, {
         scaleX: {type: "f", value: 2.0},
         scaleY: {type: "f", value: 2.0},
