@@ -10,6 +10,7 @@ class IPGraph {
   #texture;
   #nodes;
   #lastNode;
+  #subGraphs;
 
   constructor(height, width, inputTexture) {
     this.#height = height;
@@ -17,6 +18,7 @@ class IPGraph {
     this.#texture = inputTexture;
     this.#lastNode = null;
     this.#nodes = [];
+    this.#subGraphs = [];
   }
 
   // Node adding. Essentially a strategy pattern. 
@@ -31,7 +33,16 @@ class IPGraph {
 
   // Renderer initialization. Essentially an observer pattern.
   initializeRenderer(renderer) {
+    // Initialize graph's nodes
     this.#nodes.forEach(node => node.initializeRenderer(renderer));
+    // Initialize graph's subGraphs
+    this.#subGraphs.forEach(subGraph => subGraph.initializeRenderer(renderer));
+  }
+
+  // Subscribe sub graphs for initialization
+  subscribeSubGraph(subGraph) {
+    this.#subGraphs.push(subGraph);
+    return this;
   }
 
   // Getter functions
