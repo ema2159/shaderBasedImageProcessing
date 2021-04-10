@@ -14,6 +14,7 @@ import {ctVertexShader, ctFragmentShader} from "./shaders/CTshaders.js";
  * @class IPFilter
  */
 class IPFilter {
+  // Private class fields
   #material;
   #scene;
   #orthoCamera;
@@ -124,14 +125,14 @@ class Scaling extends IPFilter {
  * @class IArithmetic
  */
 class IArithmetic extends IPFilter {
-  constructor(height, width, texture, texture2, uniformsParam = {}) {
+  constructor(height, width, texture, uniformsParam = {}) {
     let imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
         scale: {type: "f", value: 1.0},
         centerX: {type: "f", value: 0.0},
         centerY: {type: "f", value: 0.0},
         image: {type: "t", value: texture},
-        image2: {type: "t", value: texture2},
+        image2: {type: "t", value: texture},
         operation: {type: "i", value: 0},
         scaleFactor: {type: "f", value: 1.0},
         offset: {type: "f", value: 0.0},
@@ -233,6 +234,7 @@ class LoGFilter extends IPFilter {
  * @class SGFilter
  */
 class SGFilter extends IPFilter {
+  // Private class fields
   #intermediate;
 
   constructor(height, width, texture, uniformsParam = {}, fstPass = false) {
