@@ -1,7 +1,8 @@
 import * as THREE from "https://unpkg.com/three/build/three.module.js";
 import {OrbitControls} from "https://unpkg.com/three/examples/jsm/controls/OrbitControls.js";
 import {GUI} from "https://unpkg.com/three/examples/jsm/libs/dat.gui.module.js";
-import * as IPGraph from "./IPGraph.js";
+import * as IPFilter from "./IPFilter.js";
+import IPGraph from "./IPGraph.js";
 
 
 var camera, controls, scene, renderer, container;
@@ -60,25 +61,27 @@ function init() {
     videoTexture.generateMipmaps = false;
     videoTexture.format = THREE.RGBFormat;
 
-    imageProcessing = new IPGraph.GaussFilter(
-      video.videoHeight,
-      video.videoWidth,
-      videoTexture,
-      {
-	// sigma: {type: "f", value: 5.0},
-	// kernelSize: {type: "i", value: 31.0},
-      }
-    );
+    // Image Processing Graph
+    imageProcessing = new IPGraph(video.videoHeight, video.videoWidth, videoTexture);
+
+    imageProcessing
+      .addNode(IPFilter.SGFilter, {
+	sigma: {type: "f", value: 5.0},
+	kernelSize: {type: "i", value: 31.0},
+      })
+      .addNode(IPFilter.CTFilter, {
+        hueShift: {type: "f", value: 50.0},
+      })
+      .addNode(IPFilter.Scaling, {
+        scaleX: {type: "f", value: 2.0},
+        scaleY: {type: "f", value: 2.0},
+      });
 
     var geometry = new THREE.PlaneGeometry(
       1,
-      video.videoHeight / video.videoWidth,
+      video.videoHeight / video.videoWidth
     );
-    var material = new THREE.MeshBasicMaterial({
-      map: videoTexture,
-      side: THREE.DoubleSide,
-    });
-    plane = new THREE.Mesh(geometry, imageProcessing.material);
+    plane = new THREE.Mesh(geometry, imageProcessing.outputMaterial);
     plane.receiveShadow = false;
     plane.castShadow = false;
     scene.add(plane);
