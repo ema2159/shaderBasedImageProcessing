@@ -8,6 +8,7 @@ class IPGraph {
   #height;
   #width;
   #texture;
+  #nodes;
   #lastNode;
 
   constructor(height, width, inputTexture) {
@@ -15,14 +16,22 @@ class IPGraph {
     this.#width = width;
     this.#texture = inputTexture;
     this.#lastNode = null;
+    this.#nodes = [];
   }
 
+  // Node adding. Essentially a strategy pattern. 
   addNode(IPNode, uniforms) {
     let tex = this.#texture;
     let filterNode = new IPNode(this.#height, this.#width, tex, uniforms);
+    this.#nodes.push(filterNode);
     this.#texture = filterNode.rtt.texture;
     this.#lastNode = filterNode;
     return this;
+  }
+
+  // Renderer initialization. Essentially an observer pattern.
+  initializeRenderer(renderer) {
+    this.#nodes.forEach(node => node.initializeRenderer(renderer));
   }
 
   // Getter functions
