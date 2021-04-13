@@ -8,31 +8,45 @@ let url = new URL(window.location.href);
 let sourceImage = url.searchParams.get("sourceimage");
 console.log(sourceImage);
 
-var camera, controls, scene, renderer, container;
-var plane;
+let camera, controls, scene, renderer, container;
+let plane;
+let terrainGeometry;
 
 // VIDEO AND THE ASSOCIATED TEXTURE
-var video, videoTexture;
+let video, videoTexture;
 
 // GUI
-var gui;
+let gui;
 
 init();
 animate();
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+function createScene() {
+  // initialize Sun
+  let sunGeometry = new THREE.CircleGeometry( 4, 64, 0, Math.PI );
+  let sunMaterial = new THREE.MeshBasicMaterial({ color: 0xE5C131, fog: false });
+  let sun = new THREE.Mesh( sunGeometry, sunMaterial );
+  scene.add(sun);
+  sun.position.set( 0, -0.5, -8 );
 
-  scene = new THREE.Scene();
-
-  renderer = new THREE.WebGLRenderer({antialias: true, alpha: true});
-  renderer.autoClear = false;
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = false;
-
-  container.appendChild(renderer.domElement);
+  terrainGeometry = new THREE.PlaneGeometry(
+    16,
+    16,
+    100,
+    100,
+  );
+  let material = new THREE.MeshBasicMaterial({
+    side: THREE.DoubleSide,
+    color: 0x051DF2,
+    wireframe: true
+  });
+  plane = new THREE.Mesh(terrainGeometry, material);
+  plane.position.y = -0.5;
+  plane.rotation.x = -Math.PI/2;
+  plane.receiveShadow = false;
+  plane.castShadow = false;
+  scene.add(plane);
+}
 
 function createTexturePlanes(texture, height, width) {
   let geometry = new THREE.PlaneGeometry(
@@ -157,6 +171,8 @@ function init() {
     createTexturePlanes(imageTexture, window.innerHeight, window.innerWidth);
   }
 }
+
+createScene();
 
 function render() {
   renderer.clear();
