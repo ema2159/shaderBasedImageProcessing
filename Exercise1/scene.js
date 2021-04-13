@@ -3,6 +3,10 @@ import {OrbitControls} from "https://unpkg.com/three/examples/jsm/controls/Orbit
 import {GUI} from "https://unpkg.com/three/examples/jsm/libs/dat.gui.module.js";
 import {vertexShader, fragmentShader} from "./shaders.js";
 
+// Browser parameters
+let url = new URL(window.location.href);
+let sourceImage = url.searchParams.get("sourceimage");
+console.log(sourceImage);
 
 var camera, controls, scene, renderer, container;
 var plane;
