@@ -12,6 +12,11 @@ import {ctVertexShader, ctFragmentShader} from "./shaders/CTshaders.js";
  * Abstract Class IPFilter.
  *
  * @class IPFilter
+ *
+ * Abstract class for creating offscreen rendering image processing nodes.
+ * @param {int} width   The width of the renderTarget.
+ * @param {int} height  The height of the renderTarget.
+ * @param {Object} imageProcessingMaterial Shader material that implements the image processing method.
  */
 class IPFilter {
   // Private class fields
@@ -96,6 +101,16 @@ class IPFilter {
  * Class Scaling.
  *
  * @class Scaling
+ * Class for creating an offscreen rendering image scaling filter.
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {scaleX: {type: _"f"_, value: *2.0*},
+ * scaleY: {type: _"f"_, value: *2.0*},
+ * interpolation: {type: _"i"_, value: *0*}} // 0: bilinear, 1: nearest neighbors, 2: no interp.
+ * @extends IPFilter
  */
 class Scaling extends IPFilter {
   constructor(height, width, texture, uniformsParam = {}) {
@@ -123,6 +138,22 @@ class Scaling extends IPFilter {
  * Class IArithmetic.
  *
  * @class IArithmetic
+ * Class for creating an offscreen rendering image arithmetic node.
+ * It implements the following operation:
+ * (image1 _operator_ image2)*scaleFactor+offset
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {scale: {type: _"f"_, value: *1.4*}, // Scale second texture
+ * centerX: {type: _"f"_, value: *0.3*}, // Move center of second texture along X axis
+ * centerY: {type: _"f"_, value: *0.2*}, // Move center of second texture along Y axis
+ * image2: {type: _"t"_, value: texture}, // Second texture to process. Must be a texture object.
+ * operation: {type: _"i"_, value: *0*}, // 0: Add, 1: Sub, 2: Mult, 3: Div
+ * scaleFactor: {type: _"f"_, value: *1.2*},
+ * offset: {type: _"f"_, value: *0.3*}}
+ * @extends IPFilter
  */
 class IArithmetic extends IPFilter {
   constructor(height, width, texture, uniformsParam = {}) {
@@ -154,6 +185,16 @@ class IArithmetic extends IPFilter {
  * Class GaussFilter.
  *
  * @class GaussFilter
+ *
+ * Class for creating a non separated offscreen rendering image gaussian filter.
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {sigma: {type: _"f"_, value: *5.0*},
+ * kernelSize: {type: _"i"_, value: *31.0*}}
+ * @extends IPFilter
  */
 class GaussFilter extends IPFilter {
   constructor(height, width, texture, uniformsParam = {}) {
@@ -180,6 +221,19 @@ class GaussFilter extends IPFilter {
  * Class LaplaceFilter.
  *
  * @class LaplaceFilter
+ *
+ * Class for creating an offscreen rendering image laplacian filter.
+ * It uses the following kernel:
+ * |-1.0|-1.0| -1.0|
+ * |-1.0| 8.0| -1.0|
+ * |-1.0|-1.0| -1.0|
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {norm: {type: _"b"_, value: _true_}} // Whether to normalize or not each pixel's color
+ * @extends IPFilter
  */
 class LaplaceFilter extends IPFilter {
   constructor(height, width, texture, uniformsParam = {}) {
@@ -205,6 +259,17 @@ class LaplaceFilter extends IPFilter {
  * Class LoGFilter.
  *
  * @class LoGFilter
+ *
+ * Class for creating an offscreen rendering image laplacian of gaussian filter.
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {sigma: {type: _"f"_, value: *5.0*},
+ * kernelSize: {type: _"i"_, value: *31.0*}
+ * norm: {type: _"b"_, value: _true_}} // Whether to normalize or not each pixel's color
+ * @extends IPFilter
  */
 class LoGFilter extends IPFilter {
   constructor(height, width, texture, uniformsParam = {}) {
@@ -232,6 +297,17 @@ class LoGFilter extends IPFilter {
  * Class SGFilter.
  *
  * @class SGFilter
+ *
+ * Class for creating a separated offscreen rendering image gaussian filter.
+ * This should be used instead of the GaussFilter class since it obtains the same result much faster.
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {sigma: {type: _"f"_, value: *10.0*},
+ * kernelSize: {type: _"i"_, value: *61.0*}}
+ * @extends IPFilter
  */
 class SGFilter extends IPFilter {
   // Private class fields
@@ -291,6 +367,15 @@ class SGFilter extends IPFilter {
  * Class MedianFilter.
  *
  * @class MedianFilter
+ *
+ * Class for creating an offscreen rendering image nearest neighbors median filter.
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {kernelSize: {type: _"i"_, value: *3.0*}} // If this value is too high, it has a poor performance.
+ * @extends IPFilter
  */
 class MedianFilter extends IPFilter {
   constructor(height, width, texture, uniformsParam = {}) {
@@ -316,6 +401,15 @@ class MedianFilter extends IPFilter {
  * Class CTFilter.
  *
  * @class CTFilter
+ *
+ * Class for creating an offscreen rendering image hue shift filter.
+ * @param {int} width  The width of the renderTarget.
+ * @param {int} height The height of the renderTarget.
+ * @param {Object} texture Input texture to be processed.
+ * @param {Object} uniformsParam Object containing uniforms that override default material uniforms.
+ * An example of a valid uniforms object to pass would be the following:
+ * {hueShift: {type: _"i"_, value: *30.0*}}
+ * @extends IPFilter
  */
 class CTFilter extends IPFilter {
   constructor(height, width, texture, uniformsParam = {}) {
