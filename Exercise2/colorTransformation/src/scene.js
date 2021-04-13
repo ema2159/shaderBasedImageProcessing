@@ -38,7 +38,7 @@ function IVimageProcessing(height, width, imageProcessingMaterial) {
     new THREE.BufferAttribute(
       new Float32Array(
         // prettier-ignore
-        [ 0,1, 1,1, 1,0, 0,1, 1,0, 0,0 ]
+        [ 0,0, 1,0, 1,1, 0,0, 1,1, 0,1 ]
       ),
       2
     )
@@ -110,7 +110,6 @@ function init() {
 
     imageProcessingMaterial = new THREE.ShaderMaterial({
       uniforms: {
-	// Image scaling
         image: {type: "t", value: videoTexture},
         hueShift: {type: "f", value: 0.0},
         resolution: {
