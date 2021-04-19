@@ -56,7 +56,7 @@ function createTexturePlanes(texture, height, width) {
   );
 
   // Image Processing Graph
-  imageProcessing = new IPGraph(height, width, videoTexture);
+  imageProcessing = new IPGraph(height, width, texture);
 
   // Subgraph implementing separate node for subtraction
   let ipSub = new IPGraph(height, width, texture);
@@ -191,8 +191,9 @@ function init() {
   } else if(sourceImage==="video") {
     initializeVideo(false, "../assets/video.mp4");
   } else {
-    const imageTexture = new THREE.TextureLoader().load('../assets/grenouille.jpg');
-    createTexturePlanes(imageTexture, window.innerHeight, window.innerWidth);
+    const texLoader = new THREE.TextureLoader().load('../assets/grenouille.jpg', function(tex) {
+      createTexturePlanes(tex, tex.image.height, tex.image.width);
+    });
   }
 }
 
