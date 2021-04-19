@@ -165,9 +165,9 @@ function init() {
       })
     };
   } else if(sourceImage==="video") {
-    initializeVideo(false, "../../assets/video.mp4");
+    initializeVideo(false, "../assets/video.mp4");
   } else {
-    const imageTexture = new THREE.TextureLoader().load('../../assets/grenouille.jpg');
+    const imageTexture = new THREE.TextureLoader().load('../assets/grenouille.jpg');
     createTexturePlanes(imageTexture, window.innerHeight, window.innerWidth);
   }
 }
