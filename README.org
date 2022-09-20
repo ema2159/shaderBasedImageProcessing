@@ -1,0 +1,23 @@
+#+TITLE: Shader-based image processing
+#+CREATOR: Emmanuel Bustos T.
+#+OPTIONS: toc:nil
+
+This project implements several image processing algorithms using GLSL. Such algorithms are displayed in a series of 3D scenes rendered in the web browser using Three.js.
+
+The algorithms implemented are the following:
+- Hue shift transformation
+- 2D kernel Gaussian filter
+- Laplace filter
+- Combined Laplace and Gaussian filters 
+- Image arithmetic
+- Image scaling
+- Median filter
+- Separable Gaussian filter
+
+The scenes in question have a GUI that allows to control the different parameters of the implemented algorithms. The scene in question looks as follows:
+
+#+CAPTION: Sample scene
+[[./screenshots/scene.png]]
+
+
+The algorithms can be checked [[https://ema2159.github.io/shaderBasedImageProcessing/Exercise2/index.html][here]].
